@@ -1,9 +1,7 @@
-import { EAccountType } from "@common/enums/accountType.enum"
-import { LoginType } from "@prisma/client"
+import { EAccountType } from '@common/enums/accountType.enum';
 
 export interface IAccessToken {
-    id: string
-    loginType: LoginType,
-    type: EAccountType,
-    [key: string]: any
+  id: string;
+  type: EAccountType;
+  [key: string]: any;
 }

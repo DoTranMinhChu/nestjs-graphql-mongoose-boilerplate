@@ -16,7 +16,6 @@ import { GraphqlAccountTypesGuard } from '@guards/graphqlAuth/graphqlAccountType
     UserModule,
     JwtModule,
     ConfigModule.forRoot({
-      envFilePath: resolve(`./.env.${process.env['NODE_ENV']}`),
       isGlobal: true,
       load: [configuration],
     }),

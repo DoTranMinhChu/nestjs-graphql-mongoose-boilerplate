@@ -7,9 +7,8 @@ import {
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { join, resolve } from 'path';
+import { join } from 'path';
 import configuration from '@configs/configuration';
-import { QueryPrismaMiddleware } from '@middlewares/queryPrisma.middleware';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { AllExceptionsFilter } from '@filters/allException.filter';
 import { AuthGuard } from '@guards/auth/auth.guard';
@@ -21,6 +20,7 @@ import { GraphqlModule } from '@modules/graphql/graphql.module';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { MongooseModule } from '@nestjs/mongoose';
+import { FirebaseModule } from '@modules/firebase/firebase.module';
 
 @Module({
   imports: [
@@ -31,6 +31,7 @@ import { MongooseModule } from '@nestjs/mongoose';
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
     }),
+    FirebaseModule,
     GraphqlModule,
     JwtModule,
     ConfigModule.forRoot({
@@ -43,7 +44,7 @@ import { MongooseModule } from '@nestjs/mongoose';
         return {
           uri: config.get('database.mongodb.mainUri') || '',
           useNewUrlParser: true,
-          useUnifiedTopology: true
+          useUnifiedTopology: true,
         };
       },
       inject: [ConfigService],
@@ -72,8 +73,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(QueryPrismaMiddleware)
-      .forRoutes({ path: '*', method: RequestMethod.ALL });
+    consumer.apply().forRoutes({ path: '*', method: RequestMethod.ALL });
   }
 }

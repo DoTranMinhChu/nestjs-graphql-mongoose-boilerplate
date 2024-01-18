@@ -1,5 +1,6 @@
 export default () => ({
   NODE_ENV: process.env['NODE_ENV'],
+  firebase: JSON.parse(process.env['FIREBASE'] || '{}') || {},
   server: {
     port: parseInt(process.env['SERVER_PORT'] || '3000', 10) || 3000,
     secret: process.env['SERVER_SECRET'] || 'Secret',
