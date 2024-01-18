@@ -10,9 +10,12 @@ import { AccountTypesGuard } from '@guards/auth/accountTypes.guard';
 import { UserModule } from './user/user.module';
 import { GraphqlAuthGuard } from '@guards/graphqlAuth/graphqlAuth.guard';
 import { GraphqlAccountTypesGuard } from '@guards/graphqlAuth/graphqlAccountTypes.guard';
+import { AdminModule } from './admin';
+
 
 @Module({
   imports: [
+    AdminModule,
     UserModule,
     JwtModule,
     ConfigModule.forRoot({

@@ -1,4 +1,10 @@
-import { FlattenMaps, UpdateQuery } from 'mongoose';
+import {
+  FilterQuery,
+  FlattenMaps,
+  ProjectionType,
+  QueryOptions,
+  UpdateQuery,
+} from 'mongoose';
 import { MongooseBaseSchema } from './mongoose-base.schema';
 import { MongooseBaseRepository } from './mongoose-base.repository';
 
@@ -15,7 +21,18 @@ export class MongooseBaseService<T extends MongooseBaseSchema> {
   ): Promise<FindAllResponse<T | FlattenMaps<T>>> {
     return await this.repository.findAll(filter, options);
   }
-  async findOne(id: string) {
+  async findOne(
+    filter?: FilterQuery<T>,
+    projection?: ProjectionType<T> | null | undefined,
+    options?: QueryOptions<T> | null | undefined,
+  ) {
+    return await this.repository.findOneByCondition(
+      filter,
+      projection,
+      options,
+    );
+  }
+  async findOneById(id: string) {
     return await this.repository.findOneById(id);
   }
 

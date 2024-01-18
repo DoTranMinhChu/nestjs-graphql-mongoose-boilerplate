@@ -1,4 +1,4 @@
 export enum EAccountType {
-    USER = "USER",
+    CUSTOMER = "CUSTOMER",
     ADMIN = "ADMIN",
 }
