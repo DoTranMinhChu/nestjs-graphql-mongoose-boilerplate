@@ -11,7 +11,7 @@ import { UserModule } from './user/user.module';
 import { GraphqlAuthGuard } from '@guards/graphqlAuth/graphqlAuth.guard';
 import { GraphqlAccountTypesGuard } from '@guards/graphqlAuth/graphqlAccountTypes.guard';
 import { AdminModule } from './admin';
-
+import { UserRepository, UserService } from './user';
 
 @Module({
   imports: [

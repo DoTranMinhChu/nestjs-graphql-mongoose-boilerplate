@@ -7,6 +7,7 @@ export interface RequesterDTO {
 export const Requester = createParamDecorator(
   (_data: unknown, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
+    console.log(request)
     return request.requester;
   },
 );

@@ -4,6 +4,7 @@ import mongoose, {
   MongooseQueryOptions,
   ProjectionType,
   QueryOptions,
+  QueryWithHelpers,
   UpdateQuery,
 } from 'mongoose';
 
@@ -101,11 +102,11 @@ export class MongooseBaseRepository<T extends MongooseBaseSchema> {
       };
     });
   }
-  async create(dto: T | any): Promise<T> {
+  async create(dto: T | any) {
     return await this.model.create(dto);
   }
 
-  async findOneById(id: string): Promise<T | null> {
+  async findOneById(id: string) {
     const item = await this.model.findById(id);
     return item?.deletedAt ? null : item;
   }
@@ -114,7 +115,7 @@ export class MongooseBaseRepository<T extends MongooseBaseSchema> {
     filter: FilterQuery<T> = {},
     projection?: ProjectionType<T> | null,
     options?: QueryOptions<T> | null,
-  ): Promise<T | null> {
+  ) {
     filter.deletedAt = null;
     return await this.model.findOne(filter, projection, options);
   }
@@ -127,7 +128,7 @@ export class MongooseBaseRepository<T extends MongooseBaseSchema> {
           Omit<MongooseQueryOptions<T>, 'lean' | 'timestamps'>)
       | QueryOptions<T>
       | null,
-  ): Promise<FindAllResponse<mongoose.FlattenMaps<T> | T>> {
+  ) {
     const [count, items] = await Promise.all([
       this.model.countDocuments(
         filter,
@@ -147,7 +148,7 @@ export class MongooseBaseRepository<T extends MongooseBaseSchema> {
     id: string,
     update: UpdateQuery<T>,
     options?: QueryOptions<T>,
-  ): Promise<mongoose.FlattenMaps<T> | T | null> {
+  ) {
     return await this.model.findOneAndUpdate(
       { _id: id, deletedAt: null },
       update,
@@ -155,10 +156,7 @@ export class MongooseBaseRepository<T extends MongooseBaseSchema> {
     );
   }
 
-  async softDelete(
-    id: string,
-    options?: QueryOptions<T> | null,
-  ): Promise<mongoose.FlattenMaps<T> | T | null> {
+  async softDelete(id: string, options?: QueryOptions<T> | null) {
     return await this.model.findByIdAndUpdate<T>(
       id,
       {
@@ -168,10 +166,7 @@ export class MongooseBaseRepository<T extends MongooseBaseSchema> {
     );
   }
 
-  async permanentlyDelete(
-    id: string,
-    options?: QueryOptions<T> | null,
-  ): Promise<mongoose.FlattenMaps<T> | T | null> {
+  async permanentlyDelete(id: string, options?: QueryOptions<T> | null) {
     return await this.model.findByIdAndDelete(id, options);
   }
 }

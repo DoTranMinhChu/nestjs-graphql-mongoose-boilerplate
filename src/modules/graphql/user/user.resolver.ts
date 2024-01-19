@@ -1,11 +1,15 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
-  CreateUserInput,
+  LoginUserData,
+  LoginUserInput,
+  RegisterUserInput,
   UserSchema,
   UserSchemaPaginateData,
 } from './user.schema';
 import { UserService } from './user.service';
 import { QueryGetListInput } from '../base/base-input.schema';
+import { Requester, RequesterDTO } from '@decorators/auth/requester.decorator';
+import { GraphqlAuthApi } from '@decorators/auth/graphqlAuth.decorator';
 
 @Resolver(UserSchema)
 export class UserResolver {
@@ -18,11 +22,26 @@ export class UserResolver {
     return await this.userService.fetch(queryGetListInput);
   }
 
-  @Mutation(() => UserSchema)
-  async createUser(
-    @Args(CreateUserInput.name) createUserInput: CreateUserInput,
-  ) {
-    return await this.userService.create(createUserInput);
+  @Query(() => UserSchemaPaginateData)
+  @GraphqlAuthApi()
+  async getMyInformation(@Context('requester') requester: RequesterDTO) {
+    console.log('requester ======> ', requester);
+    
+    return requester;
+  }
+
+  @Mutation(() => LoginUserData)
+  async registerUser(
+    @Args(RegisterUserInput.name) registerUserInput: RegisterUserInput,
+  ): Promise<LoginUserData> {
+    return await this.userService.userRegister(registerUserInput);
+  }
+
+  @Mutation(() => LoginUserData)
+  async loginUser(
+    @Args(LoginUserInput.name) loginUserInput: LoginUserInput,
+  ): Promise<LoginUserData> {
+    return await this.userService.userLogin(loginUserInput);
   }
 
   // @GraphqlAuthApi()

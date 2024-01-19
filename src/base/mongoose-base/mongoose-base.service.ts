@@ -7,10 +7,13 @@ import {
 } from 'mongoose';
 import { MongooseBaseSchema } from './mongoose-base.schema';
 import { MongooseBaseRepository } from './mongoose-base.repository';
+import { QueryGetListInput } from '@modules/graphql/base/base-input.schema';
 
 export class MongooseBaseService<T extends MongooseBaseSchema> {
   constructor(private readonly repository: MongooseBaseRepository<T>) {}
-
+  async fetch(query: QueryGetListInput) {
+    return await this.repository.fetch(query);
+  }
   async create(createData: T | any): Promise<T> {
     return await this.repository.create(createData);
   }

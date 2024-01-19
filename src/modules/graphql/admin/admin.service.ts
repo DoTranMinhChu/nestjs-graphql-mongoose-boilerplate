@@ -9,7 +9,5 @@ export class AdminService extends MongooseBaseService<AdminSchema> {
   constructor(private readonly userRepository: AdminRepository) {
     super(userRepository);
   }
-  async fetch(query: QueryGetListInput) {
-    return await this.userRepository.fetch(query);
-  }
+  
 }

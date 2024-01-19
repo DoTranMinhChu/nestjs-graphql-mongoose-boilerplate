@@ -1,6 +1,7 @@
 import {
   CanActivate,
   ExecutionContext,
+  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -10,6 +11,10 @@ import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
 import { IS_GRAPHQL_AUTH } from '@decorators/auth/graphqlAuth.decorator';
 import { IS_GRAPHQL_AUTH_OR_UNAUTH } from '@decorators/auth/graphqlAuthOrUnauth.decorator';
+import { UserSchema, UserService } from '@modules/graphql/user';
+import { IAccessToken } from '@common/interfaces/auth/accessToken.interface';
+import { EAccountType } from '@common/enums/accountType.enum';
+import mongoose from 'mongoose';
 
 @Injectable()
 export class GraphqlAuthGuard implements CanActivate {
@@ -17,6 +22,7 @@ export class GraphqlAuthGuard implements CanActivate {
     private jwtService: JwtService,
     private reflector: Reflector,
     private readonly configService: ConfigService,
+    private readonly userService: UserService,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -28,6 +34,7 @@ export class GraphqlAuthGuard implements CanActivate {
     );
 
     const isContainToken = this.isContainToken(request);
+
     const isAuthOrUnauthApi = this.reflector.getAllAndOverride<boolean>(
       IS_GRAPHQL_AUTH_OR_UNAUTH,
       [gqlContext.getHandler(), gqlContext.getClass()],
@@ -43,11 +50,12 @@ export class GraphqlAuthGuard implements CanActivate {
     }
 
     try {
-      const payload = await this.jwtService.verifyAsync(token, {
+      const payload: IAccessToken = await this.jwtService.verifyAsync(token, {
         secret: this.configService.get('server.secret') || 'secret',
       });
       // Assign the payload to the GraphQL context
-      gqlContext.getContext().requester = payload;
+
+      gqlContext.getContext().requester = this.makeupDataForRequester(payload);
     } catch {
       throw new UnauthorizedException();
     }
@@ -65,5 +73,19 @@ export class GraphqlAuthGuard implements CanActivate {
   }
   private isContainToken(request: any): any {
     return !!request?.headers?.authorization;
+  }
+
+  private makeupDataForRequester(payload: IAccessToken) {
+    const requester: any = { payload };
+
+    switch (requester.payload.type) {
+      case EAccountType.USER: {
+        requester.getUser = async () => {
+          return await this.userService.findOneById(payload.id);
+        };
+        break;
+      }
+    }
+    return requester;
   }
 }

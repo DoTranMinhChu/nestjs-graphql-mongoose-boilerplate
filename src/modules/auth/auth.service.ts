@@ -1,18 +1,13 @@
-import { EAccountType } from '@common/enums/accountType.enum';
+import { IAccessToken } from '@common/interfaces/auth/accessToken.interface';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import jwt from 'jsonwebtoken';
-export interface IPayloadToken {
-  pageId?: String;
-  psid?: String;
-  accountType: string;
-  [name: string]: any;
-}
+
 @Injectable()
 export class AuthService {
   constructor(private configService: ConfigService) {}
 
-  generateToken(payload: IPayloadToken): string {
+  generateToken(payload: IAccessToken): string {
     return jwt.sign(payload, this.configService.get('server.secret') || '', {
       expiresIn: '30d',
     });
@@ -22,11 +17,6 @@ export class AuthService {
     return jwt.verify(token, this.configService.get('server.secret') || '');
   }
 
-  getAdministratorToken() {
-    return this.generateToken({
-      accountType: EAccountType.ADMIN,
-    });
-  }
   //   getCustomerToken(customer: ICustomer) {
   //     return this.generateToken({
   //       role: EAccountType.CUSTOMER,

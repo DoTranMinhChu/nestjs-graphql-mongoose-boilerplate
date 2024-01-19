@@ -15,7 +15,7 @@ export class UserSchema extends MongooseBaseSchema {
   name!: string;
 
   @Field(() => String)
-  @Prop({ unique: true })
+  @Prop({})
   email!: string;
 
   @Field(() => String)
@@ -24,7 +24,7 @@ export class UserSchema extends MongooseBaseSchema {
 
   @Field(() => String)
   @Prop()
-  address!: string;
+  username!: string;
 
   // @Field((_type: any) => [RefreshTokenUserSchema])
   // refreshTokens!: RefreshTokenUserSchema[];
@@ -34,19 +34,30 @@ UserSchemaFactory.index({ name: 'text' }, { weights: { name: 1 } });
 
 //===== Input =====
 @InputType()
-export class CreateUserInput {
+export class RegisterUserInput {
   @Field(() => String)
   name!: string;
 
   @Field(() => String)
-  email!: string;
+  username!: string;
 
   @Field(() => String)
   password!: string;
+}
+
+@InputType()
+export class LoginUserInput {
+  @Field(() => String)
+  username!: string;
 
   @Field(() => String)
-  address!: string;
+  password!: string;
 }
 //===== Type =====
+@ObjectType()
+export class LoginUserData {
+  @Field(() => String)
+  accessToken!: string;
+}
 @ObjectType()
 export class UserSchemaPaginateData extends PaginateDataSchema(UserSchema) {}

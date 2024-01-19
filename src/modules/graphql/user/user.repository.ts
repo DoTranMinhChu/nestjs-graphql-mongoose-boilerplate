@@ -9,8 +9,11 @@ import { UserSchema } from './user.schema';
 export class UserRepository extends MongooseBaseRepository<UserSchema> {
   constructor(
     @InjectModel(UserSchema.name)
-    private readonly userRepository: Model<UserSchema>,
+    private readonly userSchema: Model<UserSchema>,
   ) {
-    super(userRepository);
+    super(userSchema);
+  }
+  async findByUsername(username: string) {
+    return await this.userSchema.findOne({ username });
   }
 }

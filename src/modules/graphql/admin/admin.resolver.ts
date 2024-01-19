@@ -10,6 +10,7 @@ import { AuthService } from '@modules/auth/auth.service';
 import { AdminRepository } from './admin.repository';
 import { NotFoundException } from '@nestjs/common';
 import { EAccountType } from '@common/enums/accountType.enum';
+import { IAccessToken } from '@common/interfaces/auth/accessToken.interface';
 
 @Resolver(AdminSchema)
 export class AdminResolver {
@@ -37,10 +38,11 @@ export class AdminResolver {
     if (!admin) {
       throw new NotFoundException("User name doesn't existed");
     }
-    const token = this.authService.generateToken({
-      accountType: EAccountType.ADMIN,
-      _id: admin._id,
-    });
+    const payload: IAccessToken = {
+      type: EAccountType.ADMIN,
+      id: admin.id,
+    };
+    const token = this.authService.generateToken(payload);
 
     return { token };
   }
