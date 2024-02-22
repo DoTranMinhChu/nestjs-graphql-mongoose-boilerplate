@@ -12,20 +12,20 @@ import { NotFoundException } from '@exceptions/not-found.exception';
 export class UserBalanceService extends MongooseBaseService<UserBalanceModel> {
   constructor(
     private readonly userBalanceRepository: UserBalanceRepository,
-  ) // private readonly userRepository: UserRepository,
-  {
+    private readonly userRepository: UserRepository,
+  ) {
     super(userBalanceRepository);
   }
 
   async adminGrantingMoneyToUser(
     adminGrantingMoneyToUserInput: AdminGrantingMoneyToUserInput,
   ) {
-    // const user = await this.userRepository.findOneById(
-    //   adminGrantingMoneyToUserInput.userId,
-    // );
-    // if (!user) {
-    //   throw new NotFoundException(EXCEPTION.USERNAME_DOES_NOT_EXIST);
-    // }
+    const user = await this.userRepository.findOneById(
+      adminGrantingMoneyToUserInput.userId,
+    );
+    if (!user) {
+      throw new NotFoundException(EXCEPTION.USERNAME_DOES_NOT_EXIST);
+    }
     adminGrantingMoneyToUserInput.type = EUserBalanceType.RECEIVE_FROM_ADMIN;
     adminGrantingMoneyToUserInput.amount = Math.abs(
       adminGrantingMoneyToUserInput.amount,

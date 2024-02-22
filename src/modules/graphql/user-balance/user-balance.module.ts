@@ -15,12 +15,14 @@ import { UserModel, UserModelFactory } from '../user/user.model';
   imports: [
     MongooseModule.forFeature([
       { name: UserBalanceModel.name, schema: UserBalanceModelFactory },
+      { name: UserModel.name, schema: UserModelFactory },
     ]),
   ],
   providers: [
     UserBalanceResolver,
     UserBalanceService,
     UserBalanceRepository,
+    UserRepository,
     { provide: UserBalanceRepository.name, useClass: UserBalanceRepository },
   ],
   exports: [UserBalanceService],

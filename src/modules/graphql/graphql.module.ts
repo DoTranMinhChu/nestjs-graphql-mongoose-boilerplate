@@ -10,6 +10,9 @@ import { GraphqlAuthGuard } from '@guards/graphql-auth/graphql-auth.guard';
 import { GraphqlAccountTypesGuard } from '@guards/graphql-auth/graphql-account-types.guard';
 import { AdminModule } from './admin';
 import { UserBalanceModule } from './user-balance';
+import { MongooseModule } from '@nestjs/mongoose';
+import { UserBalanceModel } from './user-balance/user-balance.model';
+import { UserModel } from './user/user.model';
 
 @Module({
   imports: [
