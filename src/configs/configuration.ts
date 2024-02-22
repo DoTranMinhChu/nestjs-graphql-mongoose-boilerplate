@@ -15,4 +15,10 @@ export default () => ({
       mainUri: process.env['MONGODB_URI'] || '',
     },
   },
+  redis: {
+    host: process.env['REDIS_HOST'] || '',
+    port: process.env['REDIS_PORT'] || 14816,
+    username: process.env['REDIS_USERNAME'] || 'default',
+    password: process.env['REDIS_PASSWORD'] || 'password',
+  },
 });

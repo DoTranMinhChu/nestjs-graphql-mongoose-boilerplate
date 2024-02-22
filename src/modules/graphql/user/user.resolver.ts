@@ -21,10 +21,7 @@ import { QueryGetListInput } from '../base';
 
 @Resolver(UserSchema)
 export class UserResolver {
-  constructor(
-    private readonly userService: UserService,
-    @Inject(CACHE_MANAGER) private cacheService: Cache,
-  ) {}
+  constructor(private readonly userService: UserService) {}
 
   @Query(() => UserSchemaPaginateData)
   async getAllUsers(
@@ -33,9 +30,6 @@ export class UserResolver {
     return await this.userService.fetch(queryGetListInput);
   }
 
-  @UseInterceptors(CacheInterceptor)
-  @CacheKey('getOneUserById')
-  @CacheTTL(10000) // override TTL to 10 seconds
   @Query(() => UserSchema)
   @GraphqlAuthApi()
   async getOneUserById(@Args('_id', { type: () => String }) _id: string) {
@@ -45,8 +39,6 @@ export class UserResolver {
   @Query(() => UserSchema)
   @GraphqlAuthApi()
   async getMyInformation(@Context('requester') requester: RequesterDTO) {
-    const data = await this.cacheService.get('me');
-
     return requester.getUser();
   }
 

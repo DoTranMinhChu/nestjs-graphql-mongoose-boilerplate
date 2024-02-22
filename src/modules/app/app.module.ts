@@ -10,7 +10,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { join } from 'path';
 import configuration from '@configs/configuration';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
-import { AllExceptionsFilter } from '@filters/allException.filter';
 import { AuthGuard } from '@guards/auth/auth.guard';
 import { JwtModule } from '@nestjs/jwt';
 import { AccountTypesGuard } from '@guards/auth/accountTypes.guard';
@@ -22,6 +21,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { MongooseModule } from '@nestjs/mongoose';
 import { FirebaseModule } from '@modules/firebase/firebase.module';
 import { CacheModule } from '@nestjs/cache-manager';
+import { AllExceptionsFilter } from '@filters';
 
 @Module({
   imports: [
@@ -43,8 +43,9 @@ import { CacheModule } from '@nestjs/cache-manager';
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (config: ConfigService) => {
+        console.log('config.get ===> ', config.get('database'));
         return {
-          uri: config.get('database.mongodb.mainUri') || '',
+          uri: config.get<string>('database.mongodb.mainUri') || '',
           useNewUrlParser: true,
           useUnifiedTopology: true,
         };

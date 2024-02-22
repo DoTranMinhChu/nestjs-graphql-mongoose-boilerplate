@@ -8,6 +8,8 @@ import {
 import { MongooseBaseSchema } from './mongoose-base.schema';
 import { MongooseBaseRepository } from './mongoose-base.repository';
 import { QueryGetListInput } from '@modules/graphql/base/base-input.schema';
+import { NotFoundException } from '@exceptions/notFound.exception';
+import { EXCEPTION } from '@exceptions/exception';
 
 export class MongooseBaseService<T extends MongooseBaseSchema> {
   constructor(private readonly repository: MongooseBaseRepository<T>) {}
@@ -28,15 +30,24 @@ export class MongooseBaseService<T extends MongooseBaseSchema> {
     filter?: FilterQuery<T>,
     projection?: ProjectionType<T> | null | undefined,
     options?: QueryOptions<T> | null | undefined,
+    nullable = false,
   ) {
-    return await this.repository.findOneByCondition(
+    const result = await this.repository.findOneByCondition(
       filter,
       projection,
       options,
     );
+    if (!nullable && !result) {
+      throw new NotFoundException(EXCEPTION.RECORD_NOT_FOUND);
+    }
+    return result;
   }
-  async findOneById(id: string) {
-    return await this.repository.findOneById(id);
+  async findOneById(id: string, nullable = false) {
+    const result = await this.repository.findOneById(id);
+    if (!nullable && !result) {
+      throw new NotFoundException(EXCEPTION.RECORD_NOT_FOUND);
+    }
+    return result;
   }
 
   async update(id: string, updateData: UpdateQuery<T>) {

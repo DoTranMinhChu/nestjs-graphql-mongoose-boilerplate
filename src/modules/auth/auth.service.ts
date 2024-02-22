@@ -16,14 +16,4 @@ export class AuthService {
   decodeToken(token: string) {
     return jwt.verify(token, this.configService.get('server.secret') || '');
   }
-
-  //   getCustomerToken(customer: ICustomer) {
-  //     return this.generateToken({
-  //       role: EAccountType.CUSTOMER,
-  //       _id: customer._id,
-  //       memberId: customer.memberId,
-  //       username: customer.name,
-  //       globalCustomerId: customer.globalCustomerId,
-  //     });
-  //   }
 }
