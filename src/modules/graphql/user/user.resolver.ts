@@ -7,17 +7,8 @@ import {
   UserSchemaPaginateData,
 } from './user.schema';
 import { UserService } from './user.service';
-import { RequesterDTO } from '@decorators/auth/requester.decorator';
-import { GraphqlAuthApi } from '@decorators/auth/graphqlAuth.decorator';
-import { Inject, UseInterceptors } from '@nestjs/common';
-import {
-  CACHE_MANAGER,
-  CacheInterceptor,
-  CacheKey,
-  CacheTTL,
-} from '@nestjs/cache-manager';
-import { Cache } from 'cache-manager';
 import { QueryGetListInput } from '../base';
+import { GraphqlAuthApi, RequesterDTO } from '@decorators';
 
 @Resolver(UserSchema)
 export class UserResolver {

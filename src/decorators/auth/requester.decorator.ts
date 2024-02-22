@@ -1,4 +1,4 @@
-import { EAccountType } from '@common/enums/accountType.enum';
+import { EAccountType } from '@common/enums/account-type.enum';
 import { UserSchema } from '@modules/graphql/user';
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import mongoose from 'mongoose';

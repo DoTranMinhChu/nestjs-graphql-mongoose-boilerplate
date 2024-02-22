@@ -10,18 +10,17 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { join } from 'path';
 import configuration from '@configs/configuration';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from '@guards/auth/auth.guard';
 import { JwtModule } from '@nestjs/jwt';
-import { AccountTypesGuard } from '@guards/auth/accountTypes.guard';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
 import { GraphqlModule } from '@modules/graphql/graphql.module';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { MongooseModule } from '@nestjs/mongoose';
-import { FirebaseModule } from '@modules/firebase/firebase.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { AllExceptionsFilter } from '@filters';
+import { AuthGuard, AccountTypesGuard } from '@guards';
+import { FirebaseModule } from '@modules/firebase';
 
 @Module({
   imports: [
@@ -43,7 +42,6 @@ import { AllExceptionsFilter } from '@filters';
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (config: ConfigService) => {
-        console.log('config.get ===> ', config.get('database'));
         return {
           uri: config.get<string>('database.mongodb.mainUri') || '',
           useNewUrlParser: true,

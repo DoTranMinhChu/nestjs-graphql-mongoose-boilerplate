@@ -1,4 +1,4 @@
-import { EAccountType } from '@common/enums/accountType.enum';
+import { EAccountType } from '@common/enums/account-type.enum';
 
 export interface IAccessToken {
   id: string;

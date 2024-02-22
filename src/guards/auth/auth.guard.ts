@@ -9,7 +9,7 @@ import { Request } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
 import { IS_AUTH_API } from '@decorators/auth/auth.decorator';
-import { IS_AUTH_OR_UNAUTH_API } from '@decorators/auth/authOrUnauth.decorator';
+import { IS_AUTH_OR_UNAUTH_API } from '@decorators/auth/auth-or-un-auth.decorator';
 
 @Injectable()
 export class AuthGuard implements CanActivate {

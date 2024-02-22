@@ -5,12 +5,13 @@ import {
   AdminLoginInput,
 } from './admin.schema';
 import { AdminService } from './admin.service';
-import { QueryGetListInput } from '../base/base-input.schema';
-import { AuthService } from '@modules/auth/auth.service';
 import { AdminRepository } from './admin.repository';
 import { NotFoundException } from '@nestjs/common';
-import { EAccountType } from '@common/enums/accountType.enum';
-import { IAccessToken } from '@common/interfaces/auth/accessToken.interface';
+import { QueryGetListInput } from '../base';
+
+import { IAccessToken } from '@common/interfaces';
+import { AuthService } from '@modules/auth';
+import { EAccountType } from '@common/enums';
 
 @Resolver(AdminSchema)
 export class AdminResolver {

@@ -4,10 +4,10 @@ import configuration from '@configs/configuration';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from '@guards/auth/auth.guard';
 import { JwtModule } from '@nestjs/jwt';
-import { AccountTypesGuard } from '@guards/auth/accountTypes.guard';
+import { AccountTypesGuard } from '@guards/auth/account-types.guard';
 import { UserModule } from './user/user.module';
-import { GraphqlAuthGuard } from '@guards/graphqlAuth/graphqlAuth.guard';
-import { GraphqlAccountTypesGuard } from '@guards/graphqlAuth/graphqlAccountTypes.guard';
+import { GraphqlAuthGuard } from '@guards/graphql-auth/graphql-auth.guard';
+import { GraphqlAccountTypesGuard } from '@guards/graphql-auth/graphql-account-types.guard';
 import { AdminModule } from './admin';
 
 @Module({

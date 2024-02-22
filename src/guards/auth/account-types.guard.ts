@@ -1,5 +1,5 @@
-import { EAccountType } from '@common/enums/accountType.enum';
-import { ACCOUNT_TYPE } from '@decorators/auth/accountType.decorator';
+import { EAccountType } from '@common/enums/account-type.enum';
+import { ACCOUNT_TYPE } from '@decorators/auth/account-type.decorator';
 import { RequesterDTO } from '@decorators/auth/requester.decorator';
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';

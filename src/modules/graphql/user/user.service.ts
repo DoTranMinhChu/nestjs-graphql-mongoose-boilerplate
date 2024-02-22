@@ -13,9 +13,9 @@ import {
 import { UserRepository } from './user.repository';
 import { EXCEPTION } from '@exceptions/exception';
 import { BcryptUtil } from '@utils/bcrypt.util';
-import { IAccessToken } from '@common/interfaces/auth/accessToken.interface';
-import { EAccountType } from '@common/enums/accountType.enum';
-import { AuthService } from '@modules/auth/auth.service';
+import { EAccountType } from '@common/enums/account-type.enum';
+import { IAccessToken } from '@common/interfaces/auth/access-token.interface';
+import { AuthService } from '@modules/auth';
 
 @Injectable()
 export class UserService extends MongooseBaseService<UserSchema> {

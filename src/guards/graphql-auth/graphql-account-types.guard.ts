@@ -1,5 +1,5 @@
-import { EAccountType } from '@common/enums/accountType.enum';
-import { GRAPHQL_ACCOUNT_TYPE } from '@decorators/auth/graphqlAccountType.decorator';
+import { EAccountType } from '@common/enums/account-type.enum';
+import { GRAPHQL_ACCOUNT_TYPE } from '@decorators/auth/graphql-account-type.decorator';
 
 import { RequesterDTO } from '@decorators/auth/requester.decorator';
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';

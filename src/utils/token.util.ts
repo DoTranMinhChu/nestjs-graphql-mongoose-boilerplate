@@ -1,6 +1,6 @@
 import jsonwebtoken from 'jsonwebtoken';
 
-import { IAccessToken } from '@common/interfaces/auth/accessToken.interface';
+import { IAccessToken } from '@common/interfaces/auth/access-token.interface';
 
 export interface IGenerateTokenOption {
   exp?: string;

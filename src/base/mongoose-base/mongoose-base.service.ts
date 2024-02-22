@@ -8,7 +8,7 @@ import {
 import { MongooseBaseSchema } from './mongoose-base.schema';
 import { MongooseBaseRepository } from './mongoose-base.repository';
 import { QueryGetListInput } from '@modules/graphql/base/base-input.schema';
-import { NotFoundException } from '@exceptions/notFound.exception';
+import { NotFoundException } from '@exceptions/not-found.exception';
 import { EXCEPTION } from '@exceptions/exception';
 
 export class MongooseBaseService<T extends MongooseBaseSchema> {

@@ -1,7 +1,6 @@
 import {
   CanActivate,
   ExecutionContext,
-  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -9,12 +8,11 @@ import { GqlExecutionContext } from '@nestjs/graphql';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
-import { IS_GRAPHQL_AUTH } from '@decorators/auth/graphqlAuth.decorator';
-import { IS_GRAPHQL_AUTH_OR_UN_AUTH } from '@decorators/auth/graphqlAuthOrUnauth.decorator';
-import { UserSchema, UserService } from '@modules/graphql/user';
-import { IAccessToken } from '@common/interfaces/auth/accessToken.interface';
-import { EAccountType } from '@common/enums/accountType.enum';
-import mongoose from 'mongoose';
+import { IS_GRAPHQL_AUTH } from '@decorators/auth/graphql-auth.decorator';
+import { IS_GRAPHQL_AUTH_OR_UN_AUTH } from '@decorators/auth/graphql-auth-or-un-auth.decorator';
+import { UserService } from '@modules/graphql/user';
+import { IAccessToken } from '@common/interfaces/auth/access-token.interface';
+import { EAccountType } from '@common/enums/account-type.enum';
 
 @Injectable()
 export class GraphqlAuthGuard implements CanActivate {

@@ -1,4 +1,4 @@
-import { EAccountType } from '@common/enums/accountType.enum';
+import { EAccountType } from '@common/enums/account-type.enum';
 import { SetMetadata } from '@nestjs/common';
 
 export const GRAPHQL_ACCOUNT_TYPE = 'graphqlAccountType';
