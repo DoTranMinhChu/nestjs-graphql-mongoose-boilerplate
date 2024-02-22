@@ -1,9 +1,9 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
-  AdminSchema,
-  AdminSchemaPaginateData,
+  AdminData,
   LoginAdminInput,
   LoginAdminData,
+  AdminDataPaginateData,
 } from './admin.schema';
 import { AdminService } from './admin.service';
 import { AdminRepository } from './admin.repository';
@@ -13,7 +13,7 @@ import { IAccessToken } from '@common/interfaces';
 import { AuthService } from '@modules/auth';
 import { EAccountType } from '@common/enums';
 
-@Resolver(AdminSchema)
+@Resolver(AdminData)
 export class AdminResolver {
   constructor(
     private readonly adminService: AdminService,
@@ -21,14 +21,14 @@ export class AdminResolver {
     private readonly adminRepository: AdminRepository,
   ) {}
 
-  @Query(() => AdminSchemaPaginateData)
+  @Query(() => AdminDataPaginateData)
   async getAllAdmins(
     @Args(QueryGetListInput.name) queryGetListInput: QueryGetListInput,
   ) {
     return await this.adminService.fetch(queryGetListInput);
   }
 
-  @Mutation(() => AdminSchema)
+  @Mutation(() => AdminData)
   async createAdmin(
     @Args(LoginAdminInput.name) adminLoginInput: LoginAdminInput,
   ) {

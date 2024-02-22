@@ -3,7 +3,7 @@ import {
   LoginUserData,
   LoginUserInput,
   RegisterUserInput,
-  UserSchema,
+  UserData,
 } from './user.schema';
 import {
   BadRequestException,
@@ -16,9 +16,10 @@ import { BcryptUtil } from '@utils/bcrypt.util';
 import { EAccountType } from '@common/enums/account-type.enum';
 import { IAccessToken } from '@common/interfaces/auth/access-token.interface';
 import { AuthService } from '@modules/auth';
+import { UserModel } from './user.model';
 
 @Injectable()
-export class UserService extends MongooseBaseService<UserSchema> {
+export class UserService extends MongooseBaseService<UserModel> {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly authService: AuthService,

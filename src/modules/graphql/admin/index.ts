@@ -1,3 +1,4 @@
+export * from './admin.model';
 export * from './admin.module';
 export * from './admin.repository';
 export * from './admin.resolver';

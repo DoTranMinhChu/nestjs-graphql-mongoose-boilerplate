@@ -1,6 +1,5 @@
 import { MongooseBaseService } from '@base';
 import {
-  AdminSchema,
   LoginAdminData,
   LoginAdminInput,
   RegisterAdminInput,
@@ -16,9 +15,10 @@ import { BcryptUtil } from '@utils/bcrypt.util';
 import { IAccessToken } from '@common/interfaces';
 import { EAccountType } from '@common/enums';
 import { AuthService } from '@modules/auth';
+import { AdminModel } from './admin.model';
 
 @Injectable()
-export class AdminService extends MongooseBaseService<AdminSchema> {
+export class AdminService extends MongooseBaseService<AdminModel> {
   constructor(
     private readonly adminRepository: AdminRepository,
     private readonly authService: AuthService,
@@ -41,7 +41,9 @@ export class AdminService extends MongooseBaseService<AdminSchema> {
 
     return await this.loginAdmin(Object.assign(registerRequest, { password }));
   }
-  async loginAdmin(loginAdminInput: LoginAdminInput): Promise<LoginAdminData> {
+  async loginAdmin(
+    loginAdminInput: LoginAdminInput,
+  ): Promise<LoginAdminData> {
     const { username, password } = loginAdminInput;
 
     const isAdminListEmpty = !(await this.adminRepository.count());

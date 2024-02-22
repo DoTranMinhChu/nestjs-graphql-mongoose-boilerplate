@@ -9,11 +9,13 @@ import { UserModule } from './user/user.module';
 import { GraphqlAuthGuard } from '@guards/graphql-auth/graphql-auth.guard';
 import { GraphqlAccountTypesGuard } from '@guards/graphql-auth/graphql-account-types.guard';
 import { AdminModule } from './admin';
+import { UserBalanceModule } from './user-balance';
 
 @Module({
   imports: [
     AdminModule,
     UserModule,
+    UserBalanceModule,
     JwtModule,
     ConfigModule.forRoot({
       isGlobal: true,

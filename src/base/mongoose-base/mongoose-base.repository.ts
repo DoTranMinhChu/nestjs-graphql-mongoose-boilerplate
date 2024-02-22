@@ -8,10 +8,10 @@ import mongoose, {
   UpdateQuery,
 } from 'mongoose';
 
-import { MongooseBaseSchema } from './mongoose-base.schema';
+import { MongooseBaseModel } from './mongoose-base.model';
 import _ from 'lodash';
 
-export class MongooseBaseRepository<T extends MongooseBaseSchema> {
+export class MongooseBaseRepository<T extends MongooseBaseModel> {
   protected constructor(private readonly model: Model<T>) {
     this.model = model;
   }

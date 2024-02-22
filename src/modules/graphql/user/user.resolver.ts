@@ -3,31 +3,31 @@ import {
   LoginUserData,
   LoginUserInput,
   RegisterUserInput,
-  UserSchema,
-  UserSchemaPaginateData,
+  UserData,
+  UserPaginateData,
 } from './user.schema';
 import { UserService } from './user.service';
 import { QueryGetListInput } from '../base';
 import { GraphqlAuthApi, RequesterDTO } from '@decorators';
 
-@Resolver(UserSchema)
+@Resolver(UserData)
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
-  @Query(() => UserSchemaPaginateData)
+  @Query(() => UserPaginateData)
   async getAllUsers(
     @Args(QueryGetListInput.name) queryGetListInput: QueryGetListInput,
   ) {
     return await this.userService.fetch(queryGetListInput);
   }
 
-  @Query(() => UserSchema)
+  @Query(() => UserData)
   @GraphqlAuthApi()
   async getOneUserById(@Args('_id', { type: () => String }) _id: string) {
     return this.userService.findOneById(_id);
   }
 
-  @Query(() => UserSchema)
+  @Query(() => UserData)
   @GraphqlAuthApi()
   async getMyInformation(@Context('requester') requester: RequesterDTO) {
     return requester.getUser();

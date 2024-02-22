@@ -1,35 +1,35 @@
-import { MongooseBaseSchema } from '@base';
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Schema } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 import { PaginateDataSchema } from '../base';
-export type UserDocument = HydratedDocument<UserSchema>;
+import { MongooseBaseSchema } from '@base';
+export type UserDocument = HydratedDocument<UserData>;
+//===== Type =====
 @ObjectType()
-@Schema({
-  timestamps: true,
-  collection: 'user',
-})
-export class UserSchema extends MongooseBaseSchema {
+export class UserData extends MongooseBaseSchema {
   @Field(() => String)
-  @Prop({ text: true })
   name!: string;
 
   @Field(() => String, { nullable: true })
-  @Prop({})
   email?: string;
 
-  @Prop()
   password!: string;
 
   @Field(() => String)
-  @Prop()
   username!: string;
 
-  // @Field((_type: any) => [RefreshTokenUserSchema])
-  // refreshTokens!: RefreshTokenUserSchema[];
+  // @Field((_type: any) => [RefreshTokenUserData])
+  // refreshTokens!: RefreshTokenUserData[];
 }
-export const UserSchemaFactory = SchemaFactory.createForClass(UserSchema);
-UserSchemaFactory.index({ name: 'text' }, { weights: { name: 1 } });
+
+@ObjectType()
+export class LoginUserData {
+  @Field(() => String)
+  accessToken!: string;
+}
+
+@ObjectType()
+export class UserPaginateData extends PaginateDataSchema(UserData) {}
 
 //===== Input =====
 @InputType()
@@ -52,12 +52,3 @@ export class LoginUserInput {
   @Field(() => String)
   password!: string;
 }
-//===== Type =====
-@ObjectType()
-export class LoginUserData {
-  @Field(() => String)
-  accessToken!: string;
-}
-
-@ObjectType()
-export class UserSchemaPaginateData extends PaginateDataSchema(UserSchema) {}

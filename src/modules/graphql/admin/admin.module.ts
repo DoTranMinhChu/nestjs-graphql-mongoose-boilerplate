@@ -3,13 +3,13 @@ import { AdminResolver } from './admin.resolver';
 import { AdminService } from './admin.service';
 import { AdminRepository } from './admin.repository';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AdminSchema, AdminSchemaFactory } from './admin.schema';
+import { AdminModel, AdminModelFactory } from './admin.model';
 import { AuthService } from '@modules/auth/auth.service';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: AdminSchema.name, schema: AdminSchemaFactory },
+      { name: AdminModel.name, schema: AdminModelFactory },
     ]),
   ],
   providers: [
