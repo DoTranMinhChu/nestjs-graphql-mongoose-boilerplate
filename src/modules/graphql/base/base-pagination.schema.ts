@@ -31,3 +31,11 @@ export function PaginateDataSchema<T>(ItemType: Type<T>): any {
 
   return PageClass;
 }
+
+export class PaginateData<T> {
+  data!: T[];
+
+  total!: number;
+
+  pagination!: PagingSchema;
+}

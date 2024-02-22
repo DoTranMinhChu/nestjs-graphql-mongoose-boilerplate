@@ -21,6 +21,7 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { MongooseModule } from '@nestjs/mongoose';
 import { FirebaseModule } from '@modules/firebase/firebase.module';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { FirebaseModule } from '@modules/firebase/firebase.module';
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
     }),
+    CacheModule.register({ isGlobal: true }),
     FirebaseModule,
     GraphqlModule,
     JwtModule,

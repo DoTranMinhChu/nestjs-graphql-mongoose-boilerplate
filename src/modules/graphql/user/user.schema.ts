@@ -1,5 +1,5 @@
 import { MongooseBaseSchema } from '@base';
-import { Field, InputType, Int, ObjectType } from '@nestjs/graphql';
+import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 import { PaginateDataSchema } from '../base';
@@ -14,11 +14,10 @@ export class UserSchema extends MongooseBaseSchema {
   @Prop({ text: true })
   name!: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @Prop({})
-  email!: string;
+  email?: string;
 
-  @Field(() => String)
   @Prop()
   password!: string;
 
@@ -59,5 +58,6 @@ export class LoginUserData {
   @Field(() => String)
   accessToken!: string;
 }
+
 @ObjectType()
 export class UserSchemaPaginateData extends PaginateDataSchema(UserSchema) {}

@@ -7,13 +7,24 @@ import {
   UserSchemaPaginateData,
 } from './user.schema';
 import { UserService } from './user.service';
-import { QueryGetListInput } from '../base/base-input.schema';
-import { Requester, RequesterDTO } from '@decorators/auth/requester.decorator';
+import { RequesterDTO } from '@decorators/auth/requester.decorator';
 import { GraphqlAuthApi } from '@decorators/auth/graphqlAuth.decorator';
+import { Inject, UseInterceptors } from '@nestjs/common';
+import {
+  CACHE_MANAGER,
+  CacheInterceptor,
+  CacheKey,
+  CacheTTL,
+} from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
+import { QueryGetListInput } from '../base';
 
 @Resolver(UserSchema)
 export class UserResolver {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    @Inject(CACHE_MANAGER) private cacheService: Cache,
+  ) {}
 
   @Query(() => UserSchemaPaginateData)
   async getAllUsers(
@@ -22,12 +33,21 @@ export class UserResolver {
     return await this.userService.fetch(queryGetListInput);
   }
 
-  @Query(() => UserSchemaPaginateData)
+  @UseInterceptors(CacheInterceptor)
+  @CacheKey('getOneUserById')
+  @CacheTTL(10000) // override TTL to 10 seconds
+  @Query(() => UserSchema)
+  @GraphqlAuthApi()
+  async getOneUserById(@Args('_id', { type: () => String }) _id: string) {
+    return this.userService.findOneById(_id);
+  }
+
+  @Query(() => UserSchema)
   @GraphqlAuthApi()
   async getMyInformation(@Context('requester') requester: RequesterDTO) {
-    console.log('requester ======> ', requester);
-    
-    return requester;
+    const data = await this.cacheService.get('me');
+
+    return requester.getUser();
   }
 
   @Mutation(() => LoginUserData)
