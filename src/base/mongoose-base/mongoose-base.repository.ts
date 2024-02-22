@@ -169,4 +169,12 @@ export class MongooseBaseRepository<T extends MongooseBaseSchema> {
   async permanentlyDelete(id: string, options?: QueryOptions<T> | null) {
     return await this.model.findByIdAndDelete(id, options);
   }
+
+  async count(
+    filter?: mongoose.FilterQuery<T> | undefined,
+    options?: mongoose.mongo.CountOptions &
+      Omit<mongoose.MongooseQueryOptions<T>, 'lean' | 'timestamps'>,
+  ) {
+    return await this.model.countDocuments(filter, options);
+  }
 }

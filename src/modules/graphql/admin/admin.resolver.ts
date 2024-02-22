@@ -2,13 +2,13 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   AdminSchema,
   AdminSchemaPaginateData,
-  AdminLoginInput,
+  LoginAdminInput,
+  LoginAdminData,
 } from './admin.schema';
 import { AdminService } from './admin.service';
 import { AdminRepository } from './admin.repository';
 import { NotFoundException } from '@nestjs/common';
 import { QueryGetListInput } from '../base';
-
 import { IAccessToken } from '@common/interfaces';
 import { AuthService } from '@modules/auth';
 import { EAccountType } from '@common/enums';
@@ -30,7 +30,7 @@ export class AdminResolver {
 
   @Mutation(() => AdminSchema)
   async createAdmin(
-    @Args(AdminLoginInput.name) adminLoginInput: AdminLoginInput,
+    @Args(LoginAdminInput.name) adminLoginInput: LoginAdminInput,
   ) {
     const { password, username } = adminLoginInput;
     const admin = await this.adminRepository.findOneByCondition({
@@ -46,6 +46,13 @@ export class AdminResolver {
     const token = this.authService.generateToken(payload);
 
     return { token };
+  }
+
+  @Mutation(() => LoginAdminData)
+  async loginAdmin(
+    @Args(LoginAdminInput.name) loginAdminInput: LoginAdminInput,
+  ): Promise<LoginAdminData> {
+    return await this.adminService.loginAdmin(loginAdminInput);
   }
 
   // @GraphqlAuthApi()

@@ -31,13 +31,32 @@ AdminSchemaFactory.index({ name: 'text' }, { weights: { name: 1 } });
 
 //===== Input =====
 @InputType()
-export class AdminLoginInput {
+export class RegisterAdminInput {
+  @Field(() => String)
+  name!: string;
+
   @Field(() => String)
   username!: string;
 
   @Field(() => String)
   password!: string;
 }
+
+@InputType()
+export class LoginAdminInput {
+  @Field(() => String)
+  username!: string;
+
+  @Field(() => String)
+  password!: string;
+}
+
 //===== Type =====
 @ObjectType()
+export class LoginAdminData {
+  @Field(() => String)
+  accessToken!: string;
+}
+@ObjectType()
 export class AdminSchemaPaginateData extends PaginateDataSchema(AdminSchema) {}
+//===== Type =====
