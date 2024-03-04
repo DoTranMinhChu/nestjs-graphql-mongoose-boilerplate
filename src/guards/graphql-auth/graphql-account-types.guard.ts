@@ -18,9 +18,11 @@ export class GraphqlAccountTypesGuard implements CanActivate {
     if (!accountTypes) {
       return true;
     }
+
     const gqlContext = GqlExecutionContext.create(context);
-    const request = gqlContext.getContext().req;
-    const requester = request.requester as RequesterDTO;
-    return accountTypes.includes(requester.type);
+
+    const requester = gqlContext.getContext().requester as RequesterDTO;
+
+    return accountTypes.includes(requester.payload.type);
   }
 }

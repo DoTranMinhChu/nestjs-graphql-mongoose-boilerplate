@@ -19,6 +19,6 @@ import { AuthService } from '@modules/auth/auth.service';
     AdminRepository,
     { provide: AdminRepository.name, useClass: AdminRepository },
   ],
-  exports: [],
+  exports: [AdminService],
 })
 export class AdminModule {}

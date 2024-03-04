@@ -13,6 +13,7 @@ import { IS_GRAPHQL_AUTH_OR_UN_AUTH } from '@decorators/auth/graphql-auth-or-un-
 import { UserService } from '@modules/graphql/user';
 import { IAccessToken } from '@common/interfaces/auth/access-token.interface';
 import { EAccountType } from '@common/enums/account-type.enum';
+import { AdminService } from '@modules/graphql/admin';
 
 @Injectable()
 export class GraphqlAuthGuard implements CanActivate {
@@ -21,6 +22,7 @@ export class GraphqlAuthGuard implements CanActivate {
     private reflector: Reflector,
     private readonly configService: ConfigService,
     private readonly userService: UserService,
+    private readonly adminService: AdminService,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -76,12 +78,21 @@ export class GraphqlAuthGuard implements CanActivate {
 
   private makeupDataForRequester(payload: IAccessToken) {
     const requester: any = { payload };
-
+    requester.isUser = false;
+    requester.isAdmin = false;
     switch (requester.payload.type) {
       case EAccountType.USER: {
         requester.getUser = async () => {
           return await this.userService.findOneById(payload.id);
         };
+        requester.isUser = true;
+        break;
+      }
+      case EAccountType.ADMIN: {
+        requester.getAdmin = async () => {
+          return await this.adminService.findOneById(payload.id);
+        };
+        requester.isAdmin = true;
         break;
       }
     }

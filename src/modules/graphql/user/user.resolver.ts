@@ -1,4 +1,12 @@
-import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Context,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import {
   LoginUserData,
   LoginUserInput,
@@ -8,15 +16,28 @@ import {
 } from './user.schema';
 import { UserService } from './user.service';
 import { QueryGetListInput } from '../base';
-import { GraphqlAuthApi, RequesterDTO } from '@decorators';
+import {
+  GraphqlAccountType,
+  GraphqlAuthApi,
+  Requester,
+  RequesterDTO,
+} from '@decorators';
+import { EAccountType } from '@common/enums';
+import { UserBalanceTransactionService } from '../user-balance-transaction';
 
 @Resolver(UserData)
 export class UserResolver {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly userBalanceTransactionService: UserBalanceTransactionService,
+  ) {}
 
   @Query(() => UserPaginateData)
+  @GraphqlAuthApi()
+  @GraphqlAccountType([EAccountType.ADMIN])
   async getAllUsers(
-    @Args(QueryGetListInput.name) queryGetListInput: QueryGetListInput,
+    @Args(QueryGetListInput.name, { nullable: true })
+    queryGetListInput: QueryGetListInput,
   ) {
     return await this.userService.fetch(queryGetListInput);
   }
@@ -29,7 +50,7 @@ export class UserResolver {
 
   @Query(() => UserData)
   @GraphqlAuthApi()
-  async getMyInformation(@Context('requester') requester: RequesterDTO) {
+  async getMyInformation(@Requester() requester: RequesterDTO) {
     return requester.getUser();
   }
 
@@ -37,26 +58,25 @@ export class UserResolver {
   async registerUser(
     @Args(RegisterUserInput.name) registerUserInput: RegisterUserInput,
   ): Promise<LoginUserData> {
-    return await this.userService.userRegister(registerUserInput);
+    return this.userService.userRegister(registerUserInput);
   }
 
   @Mutation(() => LoginUserData)
   async loginUser(
     @Args(LoginUserInput.name) loginUserInput: LoginUserInput,
   ): Promise<LoginUserData> {
-    return await this.userService.userLogin(loginUserInput);
+    return this.userService.userLogin(loginUserInput);
   }
 
-  // @GraphqlAuthApi()
-  // @GraphqlAccountType([EAccountType.USER])
-  // @ResolveField()
-  // async refreshTokens(@Parent() user: User) {
-  //   const { id } = user;
-  //   return { id };
-  // }
-
-  // @ResolveField()
-  // dobFormatted(@Parent() user: User) {
-  //   return user.dob?.toISOString().split('T')[0] || null;
-  // }
+  @ResolveField()
+  @GraphqlAuthApi()
+  totalBalance(@Parent() user: UserData, @Requester() requester: RequesterDTO) {
+    if (
+      requester.isUser &&
+      requester.payload.id.toString() != user._id.toString()
+    ) {
+      return null;
+    }
+    return this.userBalanceTransactionService.sumTotalBalanceByUserId(user._id);
+  }
 }

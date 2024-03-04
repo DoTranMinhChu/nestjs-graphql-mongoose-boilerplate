@@ -1,8 +1,8 @@
 import { Prop } from '@nestjs/mongoose';
-import { Schema as MongooseSchema } from 'mongoose';
+import { Schema as MongooseSchema, Types } from 'mongoose';
 
 class MongooseBaseModel {
-  _id!: MongooseSchema.Types.ObjectId;
+  _id!: Types.ObjectId;
 
   createdAt!: Date;
 

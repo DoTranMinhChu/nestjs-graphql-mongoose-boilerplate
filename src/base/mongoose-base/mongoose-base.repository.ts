@@ -5,10 +5,11 @@ import mongoose, {
   ProjectionType,
   QueryOptions,
   QueryWithHelpers,
+  Types,
   UpdateQuery,
 } from 'mongoose';
 
-import { MongooseBaseModel } from './mongoose-base.model';
+import { MongooseBaseModel, MongooseSchema } from './mongoose-base.model';
 import _ from 'lodash';
 
 export class MongooseBaseRepository<T extends MongooseBaseModel> {
@@ -106,7 +107,7 @@ export class MongooseBaseRepository<T extends MongooseBaseModel> {
     return await this.model.create(dto);
   }
 
-  async findOneById(id: string) {
+  async findOneById(id: string | Types.ObjectId) {
     const item = await this.model.findById(id);
     return item?.deletedAt ? null : item;
   }
@@ -145,7 +146,7 @@ export class MongooseBaseRepository<T extends MongooseBaseModel> {
   }
 
   async updateById(
-    id: string,
+    id: string | Types.ObjectId,
     update: UpdateQuery<T>,
     options?: QueryOptions<T>,
   ) {
@@ -156,7 +157,10 @@ export class MongooseBaseRepository<T extends MongooseBaseModel> {
     );
   }
 
-  async softDelete(id: string, options?: QueryOptions<T> | null) {
+  async softDelete(
+    id: string | Types.ObjectId,
+    options?: QueryOptions<T> | null,
+  ) {
     return await this.model.findByIdAndUpdate<T>(
       id,
       {
@@ -166,7 +170,10 @@ export class MongooseBaseRepository<T extends MongooseBaseModel> {
     );
   }
 
-  async permanentlyDelete(id: string, options?: QueryOptions<T> | null) {
+  async permanentlyDelete(
+    id: string | Types.ObjectId,
+    options?: QueryOptions<T> | null,
+  ) {
     return await this.model.findByIdAndDelete(id, options);
   }
 

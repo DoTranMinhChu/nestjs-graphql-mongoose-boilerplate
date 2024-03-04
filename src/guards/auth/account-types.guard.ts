@@ -17,6 +17,6 @@ export class AccountTypesGuard implements CanActivate {
         }
         const request = context.switchToHttp().getRequest();
         const requester = request.requester as RequesterDTO;
-        return accountTypes.includes(requester.type);
+        return accountTypes.includes(requester.payload.type);
     }
 }

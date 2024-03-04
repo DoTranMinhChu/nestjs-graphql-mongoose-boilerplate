@@ -1,32 +1,33 @@
-import { MongooseBaseSchema, MongooseSchema } from '@base';
+import { MongooseBaseSchema } from '@base';
 import { Field, Float, InputType, ObjectType } from '@nestjs/graphql';
 import { PaginateDataSchema } from '../base';
-import { EUserBalanceType } from './user-balance.enum';
+import { EUserBalanceTransactionType } from './user-balance-transaction.enum';
 import { IsNotEmpty, IsNumber, IsString, Min } from 'class-validator';
 import { UserData } from '../user/user.schema';
+import { Types } from 'mongoose';
 
 //===== Object Type====
 @ObjectType()
-export class UserBalanceData extends MongooseBaseSchema {
+export class UserBalanceTransactionData extends MongooseBaseSchema {
   @Field(() => Float)
   amount!: number;
 
-  @Field(() => EUserBalanceType)
-  type!: EUserBalanceType;
+  @Field(() => EUserBalanceTransactionType)
+  type!: EUserBalanceTransactionType;
 
   @Field(() => String, { nullable: true })
   note?: string;
 
   @Field(() => String)
-  userId!: MongooseSchema.Types.ObjectId;
+  userId!: Types.ObjectId;
 
   @Field(() => UserData, { nullable: true })
   user?: UserData;
 }
 
 @ObjectType()
-export class UserBalancePaginateData extends PaginateDataSchema(
-  UserBalanceData,
+export class UserBalanceTransactionPaginateData extends PaginateDataSchema(
+  UserBalanceTransactionData,
 ) {}
 
 //===== Input =====
@@ -48,5 +49,5 @@ export class AdminGrantingMoneyToUserInput {
   @Min(0, { message: 'Amount must be greater than or equal to 0' })
   amount!: number;
 
-  type!: EUserBalanceType.RECEIVE_FROM_ADMIN;
+  type!: EUserBalanceTransactionType.RECEIVE_FROM_ADMIN;
 }

@@ -3,6 +3,7 @@ import {
   FlattenMaps,
   ProjectionType,
   QueryOptions,
+  Types,
   UpdateQuery,
 } from 'mongoose';
 import { MongooseBaseSchema } from './mongoose-base.schema';
@@ -10,6 +11,7 @@ import { MongooseBaseRepository } from './mongoose-base.repository';
 import { QueryGetListInput } from '@modules/graphql/base/base-input.schema';
 import { NotFoundException } from '@exceptions/not-found.exception';
 import { EXCEPTION } from '@exceptions/exception';
+import { MongooseSchema } from './mongoose-base.model';
 
 export class MongooseBaseService<T extends MongooseBaseSchema> {
   constructor(private readonly repository: MongooseBaseRepository<T>) {}
@@ -42,7 +44,7 @@ export class MongooseBaseService<T extends MongooseBaseSchema> {
     }
     return result;
   }
-  async findOneById(id: string, nullable = false) {
+  async findOneById(id: string | Types.ObjectId, nullable = false) {
     const result = await this.repository.findOneById(id);
     if (!nullable && !result) {
       throw new NotFoundException(EXCEPTION.RECORD_NOT_FOUND);
@@ -50,11 +52,11 @@ export class MongooseBaseService<T extends MongooseBaseSchema> {
     return result;
   }
 
-  async update(id: string, updateData: UpdateQuery<T>) {
+  async update(id: string | Types.ObjectId, updateData: UpdateQuery<T>) {
     return await this.repository.updateById(id, updateData);
   }
 
-  async remove(id: string) {
+  async remove(id: string | Types.ObjectId) {
     return await this.repository.softDelete(id);
   }
 }

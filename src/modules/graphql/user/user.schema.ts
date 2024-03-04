@@ -1,7 +1,7 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { Schema } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
-import { PaginateDataSchema } from '../base';
+import { Mixed, PaginateDataSchema } from '../base';
 import { MongooseBaseSchema } from '@base';
 export type UserDocument = HydratedDocument<UserData>;
 //===== Type =====
@@ -18,8 +18,8 @@ export class UserData extends MongooseBaseSchema {
   @Field(() => String)
   username!: string;
 
-  // @Field((_type: any) => [RefreshTokenUserData])
-  // refreshTokens!: RefreshTokenUserData[];
+  @Field(() => Mixed, { nullable: true })
+  totalBalance?: number;
 }
 
 @ObjectType()

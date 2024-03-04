@@ -1,6 +1,6 @@
 import { registerEnumType } from '@nestjs/graphql';
 
-enum EUserBalanceType {
+enum EUserBalanceTransactionType {
   RECEIVE_FROM_ADMIN = 'RECEIVE_FROM_ADMIN', //Received funds from the administrator
   WITHDRAWAL = 'WITHDRAWAL', // Withdrawal of funds
   DEPOSIT = 'DEPOSIT', // User deposits funds
@@ -8,8 +8,8 @@ enum EUserBalanceType {
   OTHER = 'OTHER', //Other balance transactions
 }
 
-registerEnumType(EUserBalanceType, {
-  name: 'EUserBalanceType',
+registerEnumType(EUserBalanceTransactionType, {
+  name: 'EUserBalanceTransactionType',
   description: 'The supported colors.',
   valuesMap: {
     RECEIVE_FROM_ADMIN: {
@@ -30,4 +30,4 @@ registerEnumType(EUserBalanceType, {
   },
 });
 
-export { EUserBalanceType };
+export { EUserBalanceTransactionType };

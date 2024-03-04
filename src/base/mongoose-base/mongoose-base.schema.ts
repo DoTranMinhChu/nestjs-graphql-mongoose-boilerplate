@@ -1,11 +1,12 @@
 import { Field, GraphQLISODateTime, ObjectType } from '@nestjs/graphql';
+import { Types } from 'mongoose';
 
 import { Schema as MongooseSchema } from 'mongoose';
-
+import * as mongoose from 'mongoose';
 @ObjectType()
 class MongooseBaseSchema {
   @Field(() => String)
-  _id!: MongooseSchema.Types.ObjectId;
+  _id!: Types.ObjectId;
 
   @Field(() => GraphQLISODateTime)
   createdAt!: Date;
@@ -17,4 +18,4 @@ class MongooseBaseSchema {
   deletedAt?: Date;
 }
 
-export { MongooseBaseSchema };
+export { MongooseBaseSchema, MongooseSchema };
