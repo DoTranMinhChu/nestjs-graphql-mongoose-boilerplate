@@ -4,12 +4,13 @@ import mongoose, {
   MongooseQueryOptions,
   ProjectionType,
   QueryOptions,
-  QueryWithHelpers,
   Types,
   UpdateQuery,
 } from 'mongoose';
-
-import { MongooseBaseModel, MongooseSchema } from './mongoose-base.model';
+import {
+  MongooseBaseModel,
+  MongooseUpdateOptions,
+} from './mongoose-base.model';
 import _ from 'lodash';
 
 export class MongooseBaseRepository<T extends MongooseBaseModel> {
@@ -145,7 +146,7 @@ export class MongooseBaseRepository<T extends MongooseBaseModel> {
     };
   }
 
-  async updateById(
+  async updateOneById(
     id: string | Types.ObjectId,
     update: UpdateQuery<T>,
     options?: QueryOptions<T>,
@@ -155,6 +156,13 @@ export class MongooseBaseRepository<T extends MongooseBaseModel> {
       update,
       options,
     );
+  }
+  async updateMany(
+    filter: FilterQuery<T> = {},
+    update: UpdateQuery<T>,
+    options?: MongooseUpdateOptions<T>,
+  ) {
+    return await this.model.updateMany(filter, update, options);
   }
 
   async softDelete(

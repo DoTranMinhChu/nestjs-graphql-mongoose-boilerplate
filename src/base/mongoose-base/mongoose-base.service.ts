@@ -11,7 +11,7 @@ import { MongooseBaseRepository } from './mongoose-base.repository';
 import { QueryGetListInput } from '@modules/graphql/base/base-input.schema';
 import { NotFoundException } from '@exceptions/not-found.exception';
 import { EXCEPTION } from '@exceptions/exception';
-import { MongooseSchema } from './mongoose-base.model';
+import { MongooseUpdateOptions } from './mongoose-base.model';
 
 export class MongooseBaseService<T extends MongooseBaseSchema> {
   constructor(private readonly repository: MongooseBaseRepository<T>) {}
@@ -52,8 +52,16 @@ export class MongooseBaseService<T extends MongooseBaseSchema> {
     return result;
   }
 
-  async update(id: string | Types.ObjectId, updateData: UpdateQuery<T>) {
-    return await this.repository.updateById(id, updateData);
+  async updateOneById(id: string | Types.ObjectId, updateData: UpdateQuery<T>) {
+    return await this.repository.updateOneById(id, updateData);
+  }
+
+  async updateMany(
+    filter: FilterQuery<T> = {},
+    update: UpdateQuery<T>,
+    options?: MongooseUpdateOptions<T>,
+  ) {
+    return await this.repository.updateMany(filter, update, options);
   }
 
   async remove(id: string | Types.ObjectId) {

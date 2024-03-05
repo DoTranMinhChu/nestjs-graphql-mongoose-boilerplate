@@ -10,6 +10,7 @@ import { GraphqlAuthGuard } from '@guards/graphql-auth/graphql-auth.guard';
 import { GraphqlAccountTypesGuard } from '@guards/graphql-auth/graphql-account-types.guard';
 import { AdminModule } from './admin';
 import { UserBalanceTransactionModule } from './user-balance-transaction';
+import { GraphqlLoggingPlugin } from '@plugins';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { UserBalanceTransactionModule } from './user-balance-transaction';
       provide: APP_GUARD,
       useClass: AccountTypesGuard,
     },
+    GraphqlLoggingPlugin,
   ],
 })
 export class GraphqlModule implements NestModule {

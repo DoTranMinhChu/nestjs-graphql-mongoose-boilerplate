@@ -1,6 +1,14 @@
 import { Prop } from '@nestjs/mongoose';
-import { Schema as MongooseSchema, Types } from 'mongoose';
+import {
+  Schema as MongooseSchema,
+  MongooseUpdateQueryOptions,
+  Types,
+} from 'mongoose';
+import mongodb = require('mongodb');
 
+interface MongooseUpdateOptions<T>
+  extends mongodb.UpdateOptions,
+    MongooseUpdateQueryOptions<T> {}
 class MongooseBaseModel {
   _id!: Types.ObjectId;
 
@@ -12,4 +20,4 @@ class MongooseBaseModel {
   deletedAt?: Date;
 }
 
-export { MongooseSchema, MongooseBaseModel };
+export { MongooseSchema, MongooseBaseModel, MongooseUpdateOptions };

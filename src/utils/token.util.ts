@@ -27,7 +27,9 @@ export class TokenUtil {
   ) {
     const secret: string = option.secret || 'secret';
 
-    return jsonwebtoken.sign(payload, secret, { expiresIn: option.exp });
+    return jsonwebtoken.sign(payload, secret, {
+      expiresIn: option.exp || '60 days',
+    });
   }
   static decodeToken(
     token: string,
