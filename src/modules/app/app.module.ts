@@ -21,6 +21,7 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { AllExceptionsFilter } from '@filters';
 import { AuthGuard, AccountTypesGuard } from '@guards';
 import { FirebaseModule } from '@modules/firebase';
+import { HttpLoggingMiddleware } from '@middlewares';
 
 @Module({
   imports: [
@@ -74,6 +75,8 @@ import { FirebaseModule } from '@modules/firebase';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply().forRoutes({ path: '*', method: RequestMethod.ALL });
+    consumer
+      .apply(HttpLoggingMiddleware)
+      .forRoutes({ path: '*', method: RequestMethod.ALL });
   }
 }

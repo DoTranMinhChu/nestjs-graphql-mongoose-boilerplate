@@ -98,7 +98,7 @@ export class GraphqlLoggingPlugin implements ApolloServerPlugin {
     const randomDigits = Math.floor(Math.random() * 1000000)
       .toString()
       .padStart(6, '0');
-    const requestId = `REQ${year}${month}${day}-${second}${millisecond}-${randomDigits}`;
+    const requestId = `GQL-${year}${month}${day}-${second}${millisecond}-${randomDigits}`;
     return requestId;
   }
 }
