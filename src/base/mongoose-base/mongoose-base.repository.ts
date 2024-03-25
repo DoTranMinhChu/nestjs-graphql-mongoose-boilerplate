@@ -118,7 +118,8 @@ export class MongooseBaseRepository<T extends MongooseBaseModel> {
     projection?: ProjectionType<T> | null,
     options?: QueryOptions<T> | null,
   ) {
-    filter.deletedAt = null;
+    _.set(filter, 'deletedAt', null);
+
     return await this.model.findOne(filter, projection, options);
   }
 
@@ -151,11 +152,11 @@ export class MongooseBaseRepository<T extends MongooseBaseModel> {
     update: UpdateQuery<T>,
     options?: QueryOptions<T>,
   ) {
-    return await this.model.findOneAndUpdate(
-      { _id: id, deletedAt: null },
-      update,
-      options,
-    );
+    const filter: FilterQuery<T> = {
+      _id: id,
+      deletedAt: null,
+    } as FilterQuery<T>;
+    return await this.model.findOneAndUpdate(filter, update, options);
   }
   async updateMany(
     filter: FilterQuery<T> = {},

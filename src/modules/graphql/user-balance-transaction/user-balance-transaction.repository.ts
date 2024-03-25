@@ -13,7 +13,7 @@ export class UserBalanceTransactionRepository extends MongooseBaseRepository<Use
     super(userBalanceTransactionModel);
   }
 
-  async sumTotalBalanceByUserId(userId: string | Types.ObjectId) {
+  async sumTotalBalanceByUserId(userId: Types.ObjectId) {
     const userBalanceTransactionAggregateResult =
       await this.userBalanceTransactionModel.aggregate<{
         totalBalance: number;

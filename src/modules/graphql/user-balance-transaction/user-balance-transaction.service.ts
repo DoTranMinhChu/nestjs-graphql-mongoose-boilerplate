@@ -37,7 +37,7 @@ export class UserBalanceTransactionService extends MongooseBaseService<UserBalan
     );
   }
 
-  async sumTotalBalanceByUserId(userId: string | Types.ObjectId) {
+  async sumTotalBalanceByUserId(userId: Types.ObjectId) {
     return this.userBalanceTransactionRepository.sumTotalBalanceByUserId(
       userId,
     );
