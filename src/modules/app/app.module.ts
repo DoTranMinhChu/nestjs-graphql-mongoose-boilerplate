@@ -22,6 +22,8 @@ import { AllExceptionsFilter } from '@filters';
 import { AuthGuard, AccountTypesGuard } from '@guards';
 import { FirebaseModule } from '@modules/firebase';
 import { HttpLoggingMiddleware } from '@middlewares';
+import { ScheduleModule } from '@nestjs/schedule';
+import { ScheduleService } from '@modules/schedule/schedule.service';
 
 @Module({
   imports: [
@@ -35,6 +37,7 @@ import { HttpLoggingMiddleware } from '@middlewares';
     CacheModule.register({ isGlobal: true }),
     FirebaseModule,
     GraphqlModule,
+
     JwtModule,
     ConfigModule.forRoot({
       isGlobal: true,
@@ -55,10 +58,13 @@ import { HttpLoggingMiddleware } from '@middlewares';
     ServeStaticModule.forRoot({
       rootPath: join('./', 'public'),
     }),
+    ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [
     AppService,
+
+    ScheduleService,
     {
       provide: APP_FILTER,
       useClass: AllExceptionsFilter,

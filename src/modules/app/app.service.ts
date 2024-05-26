@@ -1,4 +1,5 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class AppService {
@@ -13,4 +14,5 @@ export class AppService {
   getInternalServerErrorException() {
     throw new InternalServerErrorException();
   }
+
 }

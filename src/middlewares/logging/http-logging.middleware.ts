@@ -7,14 +7,16 @@ export class HttpLoggingMiddleware implements NestMiddleware {
 
   use(request: Request, response: Response, next: NextFunction): void {
     const { ip, method, path: url } = request;
-    const requestId = this.generateRequestId();
-    this.logger.log(`[${requestId}] [${ip}] [${method}] ${url}`);
-    response.on('close', () => {
-      const { statusCode } = response;
-      this.logger.log(
-        `[${requestId}] [${ip}] [${method}] ${url} - ${statusCode} `,
-      );
-    });
+    if (!url.includes('/graphql')) {
+      const requestId = this.generateRequestId();
+      this.logger.log(`[${requestId}] [${ip}] [${method}] ${url}`);
+      response.on('close', () => {
+        const { statusCode } = response;
+        this.logger.log(
+          `[${requestId}] [${ip}] [${method}] ${url} - ${statusCode} `,
+        );
+      });
+    }
 
     next();
   }
